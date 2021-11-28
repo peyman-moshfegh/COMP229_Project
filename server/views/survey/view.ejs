@@ -1,0 +1,49 @@
+<%- include ../partials/header.ejs %>
+
+<%- include ../partials/main_nav.ejs %>
+
+<!-- content for the edit page -->
+<div class="container">
+    <div class="row">
+        <div class="offset-md-2 col-md-8">
+
+            <h1><%= survey.title %></h1><br><br>
+
+            <form class="form" method="post">
+
+<div id="questions">
+<% for (let i = 0; i < survey.questions.length; i++) { %>
+    <% let q = 'q' + (i + 1) + '_' %>
+    <p><%= (i + 1) %>. <%= survey.questions[i][0] %></p>
+    <input type="radio" id="<%= q + 1 %>" name="<%= 'q' + (i + 1) %>" value = "1" required>
+    <label for="<%= q + 1 %>"><%= survey.questions[i][1] %></label><br>
+    <input type="radio" id="<%= q + 2 %>" name="<%= 'q' + (i + 1) %>" value = "2">
+    <label for="<%= q + 2 %>"><%= survey.questions[i][2] %></label><br>
+    <input type="radio" id="<%= q + 3 %>" name="<%= 'q' + (i + 1) %>" value = "3">
+    <label for="<%= q + 3 %>"><%= survey.questions[i][3] %></label><br>
+    <input type="radio" id="<%= q + 4 %>" name="<%= 'q' + (i + 1) %>" value = "4">
+    <label for="<%= q + 4 %>"><%= survey.questions[i][4] %></label><br><br><br>
+<% } %>
+</div><br>
+
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-edit"></i> Submit
+                </button>
+
+                <a href="/survey-list" class="btn btn-warning">
+                    <i class="fas fa-undo"></i> Cancel
+                </a>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+<!--
+<- include ../partials/bottom_nav.ejs >
+
+<- include ../partials/footer.ejs >
+
+%s are ommitted
+-->

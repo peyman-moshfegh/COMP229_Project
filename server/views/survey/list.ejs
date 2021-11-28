@@ -1,0 +1,71 @@
+<%- include ../partials/header.ejs %>
+
+<%- include ../partials/main_nav.ejs %>
+
+<!-- Main Content -->
+<main class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1><%= title %></h1>
+
+            <% if((typeof displayName == 'string') && (displayName)) { %>
+            <a href="/survey-list/add" class="btn btn-primary" role="button">
+                <i class="fas fa-plus-circle"></i> Add a Survey
+            </a>
+            <% } %>
+            <br />
+            <table class="table table-bordered table-striped table-hover">
+                <!-- Header Row-->
+                <tr class="d-flex">
+                    <th class="text-center col-2">Title</th>
+                    <th class="text-center col-2">Start Date</th>
+                    <th class="text-center col-2">End Date</th>
+
+                    <% if((typeof displayName == 'string') && (displayName)) { %>
+                        <th class="text-center col-1"></th>
+                        <th class="text-center col-1"></th>
+                    <% } %>
+                </tr>
+
+                <!-- Repeatable Template Row -->
+
+                <% for(let count = 0; count < SurveyList.length; count++) { %>
+                    <tr class="d-flex">
+                        <td class="text-center col-2"><%= SurveyList[count].title %></td>
+                        <td class="text-center col-2"><%= SurveyList[count].startDate %></td>
+                        <td class="text-center col-2"><%= SurveyList[count].endDate %></td>
+
+                        <% if((typeof displayName == 'string') && (displayName)) { %>
+                            <td class="text-center col-1">
+                            <a href="/survey-list/edit/<%= SurveyList[count]._id %>" class="btn btn-primary">
+                                <i class="fas fa-pencil-alt"></i> Edit</a>
+                        </td>
+                        <td class="text-center col-1">
+                            <a href="/survey-list/delete/<%= SurveyList[count]._id %>" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i> Delete</a>
+                        </td>
+                        <% } %>
+
+                        <% if (SurveyList[count].startDate <= today && today <= SurveyList[count].endDate ) { %>
+                        <td class="text-center col-1">
+                            <a href="/survey-list/view/<%= SurveyList[count]._id %>" class="btn btn-success">
+                                <i class="fas fa-eye"></i> View</a>
+                        </td>
+                        <% } else { %>
+                        <td class="text-center col-1">
+                            <a href="/survey-list/view/<%= SurveyList[count]._id %>" class="btn btn-success">
+                                <i class="fas fa-eye"></i> View</a>
+                        </td>
+                        <% } %>
+
+                    </tr>
+                <% } %>
+
+            </table>
+        </div>
+    </div>
+</main>
+
+<%- include ../partials/bottom_nav.ejs %>
+
+<%- include ../partials/footer.ejs %>

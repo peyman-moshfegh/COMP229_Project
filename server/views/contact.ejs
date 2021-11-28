@@ -1,0 +1,77 @@
+<%- include partials/header.ejs %>
+
+<%- include partials/main_nav.ejs %>
+
+  <!-- Main Content -->
+  <main class="container">
+    <div class="jumbotron">
+  <h1 class="display-4"><p>Contact Information</p></h1><br>
+  <address>
+  <a class="link-dark" href="mailto:COMP229Project@my.centennialcollege.ca">COMP229Project@my.centennialcollege.ca</a><br>
+  <a class="link-dark" href="tel:+1647xxxxxxx">(647) xxx-xxxx</a>
+  </address><br>
+  
+  <form id="myform">
+    <table>
+        <tr>
+          <td colspan="2">
+            <h3>Send Us a Message:</h3>
+          </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="fnm">First Name:</label>
+            </td>
+            <td>
+                <input type="text" id="fnm" name="fnm" required="required">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="lnm">Last Name:</label>
+            </td>
+            <td>
+                <input type="text" id="lnm" name="lnm" required="required">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="cntctnmbr">Phone Number:</label>
+            </td>
+            <td>
+                <input type="text" id="cntctnmbr" name="cntctnmbr" required="required">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="eml">Email:</label>
+            </td>
+            <td>
+                <input type="email" id="eml" name="eml" required="required">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="msg">Message:</label>
+            </td>
+            <td>
+                <textarea id="msg" name="msg" required="required"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" value="Submit Now">
+            </td>
+            <td>
+                <input type="reset" value="Clear Form">
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+
+  </main>
+
+<%- include partials/bottom_nav.ejs %>
+
+<%- include partials/footer.ejs %>

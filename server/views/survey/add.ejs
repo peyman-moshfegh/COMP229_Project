@@ -1,0 +1,59 @@
+<%- include ../partials/header.ejs %>
+
+<%- include ../partials/main_nav.ejs %>
+
+<!-- content for the add page -->
+<div class="container">
+    <div class="row">
+        <div class="offset-md-2 col-md-8">
+
+            <h1><%= title %></h1>
+
+            <form class="form" method="post">
+                <div class="form-group">
+                    <label for="titleTextField">Title</label>
+                    <input type="text" class="form-control"
+                        id="titleTextField"
+                        placeholder="Enter the Survey Title"
+                        name="title" required>
+                </div>
+
+<div>
+<label for="startDate">Start Date</label><br>
+<input id="startDate" type="date" name="startDate" required>
+</div><br>
+
+<div>
+<label for="endDate">End Date</label><br>
+<input id="endDate" type="date" name="endDate" required>
+</div><br><br>
+
+<div id="questions" srv=""></div><br>
+
+<button class="btn btn-outline-secondary" onclick="addQuestion()" type="button">
+<i class="fas fa-plus"></i> Add Question
+</button>
+
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-edit"></i> Submit
+                </button>
+
+                <a href="/survey-list" class="btn btn-warning">
+                    <i class="fas fa-undo"></i> Cancel
+                </a>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+<!--
+<- include ../partials/bottom_nav.ejs >
+
+<- include ../partials/footer.ejs >
+
+%s are ommitted
+-->
+
+<script src="/scripts/questions.js"></script>
