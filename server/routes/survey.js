@@ -47,4 +47,8 @@ router.get('/view/:id', surveyController.displayViewPage);
 router.post('/view/:id', surveyController.processViewPage);
 
 
+/* GET Route to provide the result - DOWNLOAD operation. */
+router.get('/result/:id', requireAuth, surveyController.performDownload);
+
+
 module.exports = router;

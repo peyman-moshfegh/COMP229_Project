@@ -42,4 +42,23 @@ router.post('/register', indexController.processRegisterPage);
 /* GET Route to perform user Logout */
 router.get('/logout', indexController.performLogout);
 
+
+let passport = require('passport');
+
+// helper function for guard purposes
+function requireAuth(req, res, next) {
+    // check if the user is logged in
+    if (!req.isAuthenticated()) {
+        return res.redirect('/login');
+    }
+    next();
+}
+
+/* GET Route for displaying the Update Profile page. */
+router.get('/updateProfile', requireAuth, indexController.displayUpdateProfilePage);
+
+/* POST Route for processing the Update Profile page. */
+router.post('/updateProfile', requireAuth, indexController.processUpdateProfilePage);
+
+
 module.exports = router;

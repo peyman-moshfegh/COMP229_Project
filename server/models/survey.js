@@ -8,6 +8,7 @@ let mongoose = require('mongoose');
 
 // create a model class
 let surveyModel = mongoose.Schema({
+    owner: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     title: String,
     startDate: String,
     endDate: String,

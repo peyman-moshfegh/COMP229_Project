@@ -15,18 +15,29 @@ let Survey = require('../models/survey');
 let moment = require('moment');
 const today = moment().format().split('T')[0]
 
+let path = require("path")
+const fs = require('fs')
+
 module.exports.displaySurveyList = (req, res, next) => {
     Survey.find((err, surveyList) => {
         if (err) {
             return console.error(err);
         } else {
-            //console.log(SurveyList);
+            //console.log(surveyList)
 
+            if (req.user) {
+                surveyList.sort((a, b) => {
+                    let x = (a.owner._id.toString() == req.user._id.toString()) ? 1 : 0
+                    let y = (b.owner._id.toString() == req.user._id.toString()) ? 1 : 0
+                    return y - x
+                })
+            }
             res.render('survey/list', {
                 title: 'Surveys', 
                 SurveyList : surveyList, 
                 today: today,
-                displayName: req.user ? req.user.displayName : ''});
+                displayName: req.user ? req.user.displayName : '',
+                userId: req.user ? req.user._id : ''});
         }
     });
 
@@ -38,7 +49,6 @@ module.exports.displayAddPage = (req, res, next) => {
 }
 
 module.exports.processAddPage = (req, res, next) => {
-
     const qs = []
     for (i = 1; ;i++) {
         let x = eval("req.body.q" + i)
@@ -46,13 +56,18 @@ module.exports.processAddPage = (req, res, next) => {
             break
         }
         const arr = [x]
-        for (j = 1; j < 5; j++) {
-            arr.push(eval("req.body.q" + i + "_" + j))
+        for (j = 1; ; j++) {
+            let y = eval("req.body.q" + i + "_" + j)
+            if (y == null) {
+                break
+            }
+            arr.push(y)
         }
         qs.push(arr)
     }
 
     let newSurvey = Survey({
+        "owner": req.user._id,
         "title": req.body.title,
         "startDate": req.body.startDate,
         "endDate": req.body.endDate,
@@ -81,7 +96,7 @@ module.exports.displayEditPage = (req, res, next) => {
         } else {
             //show the edit view
             res.render('survey/edit', {title: 'Edit Survey', survey: surveyToEdit, 
-            displayName: req.user ? req.user.displayName : ''})
+            displayName: req.user ? req.user.displayName : ''});
         }
     })
 }
@@ -96,14 +111,19 @@ module.exports.processEditPage =  (req, res, next) => {
             break
         }
         const arr = [x]
-        for (j = 1; j < 5; j++) {
-            arr.push(eval("req.body.q" + i + "_" + j))
+        for (j = 1; ; j++) {
+            let y = eval("req.body.q" + i + "_" + j)
+            if (y == null) {
+                break
+            }
+            arr.push(y)
         }
         qs.push(arr)
     }
 
     let updatedSurvey = Survey({
         "_id": id,
+        "owner": req.user._id,
         "title": req.body.title,
         "startDate": req.body.startDate,
         "endDate": req.body.endDate,
@@ -136,7 +156,30 @@ module.exports.performDelete =  (req, res, next) => {
     });
 }
 
-/////////////////////////////////////////
+////////////////////////////////////////////////////
+
+module.exports.performDownload =  (req, res, next) => {
+    let id = req.params.id;
+    result = path.join(__dirname, '../../public/assests', 'result.csv')
+    fs.writeFile(result, '', function(){})
+
+    Survey.findById(id, (err, surveyToDownload) => {
+        if (err) {
+            console.log(err);
+            res.end(err);
+        } else {
+            arrr = surveyToDownload.responses
+            for (let i = 0; i < arrr.length; i++) {
+                fs.writeFileSync(result, arrr[i].join() + "\n", {'flag':'a'}, function(err) {
+                    if (err) {
+                        return console.error(err);
+                    }
+                })
+            }
+            res.download(result, 'result.csv')
+        }
+    })
+}
 
 module.exports.displayViewPage = (req, res, next) => {
     let id = req.params.id;
@@ -179,6 +222,7 @@ module.exports.processViewPage =  (req, res, next) => {
 
             let updatedSurvey = Survey({
                 "_id": id,
+                "owner": surveyToView.owner,
                 "title": surveyToView.title,
                 "startDate": surveyToView.startDate,
                 "endDate": surveyToView.endDate,

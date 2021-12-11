@@ -15,14 +15,12 @@
 <% for (let i = 0; i < survey.questions.length; i++) { %>
     <% let q = 'q' + (i + 1) + '_' %>
     <p><%= (i + 1) %>. <%= survey.questions[i][0] %></p>
-    <input type="radio" id="<%= q + 1 %>" name="<%= 'q' + (i + 1) %>" value = "1" required>
-    <label for="<%= q + 1 %>"><%= survey.questions[i][1] %></label><br>
-    <input type="radio" id="<%= q + 2 %>" name="<%= 'q' + (i + 1) %>" value = "2">
-    <label for="<%= q + 2 %>"><%= survey.questions[i][2] %></label><br>
-    <input type="radio" id="<%= q + 3 %>" name="<%= 'q' + (i + 1) %>" value = "3">
-    <label for="<%= q + 3 %>"><%= survey.questions[i][3] %></label><br>
-    <input type="radio" id="<%= q + 4 %>" name="<%= 'q' + (i + 1) %>" value = "4">
-    <label for="<%= q + 4 %>"><%= survey.questions[i][4] %></label><br><br><br>
+    <input type="radio" id="<%= 'q' + 1 %>" name="<%= 'q' + (i + 1) %>" value = "1" required>
+    <label for="<%= 'q' + 1 %>"><%= survey.questions[i][1] %></label><br>
+    <% for (let j = 2; j < survey.questions[i].length; j++) { %>
+        <input type="radio" id="<%= 'q' + j %>" name="<%= 'q' + (i + 1) %>" value = "<%= j %>">
+        <label for="<%= 'q' + j %>"><%= survey.questions[i][j] %></label><br>
+    <% } %><br><br>
 <% } %>
 </div><br>
 

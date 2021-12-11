@@ -123,3 +123,64 @@ module.exports.performLogout = (req, res, next) => {
     req.logout();
     res.redirect('/');
 }
+
+
+module.exports.displayUpdateProfilePage = (req, res, next) => {
+    // check if user is not already loged in
+    if (!req.user) {
+        res.render('auth/register', {
+            title: "Register",
+            messages: req.flash('registerMessage'),
+            displayName: req.user ? req.user.displayName : ''
+        });
+    }
+    else {
+        res.render('auth/updateProfile', {
+            title: "Update Your Profile",
+            messages: req.flash('updateMessage'),
+            displayName: req.user ? req.user.displayName : '',
+            user: req.user});
+    }
+}
+
+module.exports.processUpdateProfilePage = (req, res, next) => {
+    let userId = req.user._id
+
+    User.remove({_id: userId}, (err) => {
+        if (err) {
+            console.log(err);
+            res.end(err);    
+        } else {
+            let updatedUser = User({
+                "_id": userId,
+                "username": req.body.username,
+                "email": req.body.email,
+                "displayName": req.body.displayName
+            })
+
+            User.register(updatedUser, req.body.password, (err) => {
+                if(err) {
+                    console.log("Error: Inserting new user");
+                    if(err.name == "UserExistsError") {
+                        req.flash('registerMessage', 'Registration Error: User Already Exists!');
+                        console.log('Error: User Already Exists!')
+                    }
+                    return res.render('auth/register', {
+                        title: "Register",
+                        messages: req.flash('registerMessage'),
+                        displayName: req.user ? req.user.displayName : ''
+                    });
+                } else {
+                    // if no error exists, then  registration is successful
+        
+                    // redirect the user and authenticate
+        
+                    return passport.authenticate('local')(req, res, () => {
+                        res.redirect('/survey-list');
+                    })
+                }
+        
+            })
+        }
+    })
+}

@@ -20,11 +20,6 @@
                     <th class="text-center col-2">Title</th>
                     <th class="text-center col-2">Start Date</th>
                     <th class="text-center col-2">End Date</th>
-
-                    <% if((typeof displayName == 'string') && (displayName)) { %>
-                        <th class="text-center col-1"></th>
-                        <th class="text-center col-1"></th>
-                    <% } %>
                 </tr>
 
                 <!-- Repeatable Template Row -->
@@ -35,32 +30,27 @@
                         <td class="text-center col-2"><%= SurveyList[count].startDate %></td>
                         <td class="text-center col-2"><%= SurveyList[count].endDate %></td>
 
-                        <% if((typeof displayName == 'string') && (displayName)) { %>
-                            <td class="text-center col-1">
+                        <td class="text-center col-1">
+                            <a href="/survey-list/view/<%= SurveyList[count]._id %>" class="btn btn-success">
+                                <i class="fas fa-eye"></i> View</a>
+                        </td>
+
+                        <% if((typeof displayName == 'string') && (displayName) && userId == SurveyList[count].owner.toString()) { %>
+                        <td class="text-center col-1">
                             <a href="/survey-list/edit/<%= SurveyList[count]._id %>" class="btn btn-primary">
                                 <i class="fas fa-pencil-alt"></i> Edit</a>
+                        </td>
+                        <td class="text-center col-1">
+                            <a href="/survey-list/result/<%= SurveyList[count]._id %>" class="btn btn-info">
+                                <i class="fas fa-download"></i> Result</a>
                         </td>
                         <td class="text-center col-1">
                             <a href="/survey-list/delete/<%= SurveyList[count]._id %>" class="btn btn-danger">
                                 <i class="fas fa-trash-alt"></i> Delete</a>
                         </td>
                         <% } %>
-
-                        <% if (SurveyList[count].startDate <= today && today <= SurveyList[count].endDate ) { %>
-                        <td class="text-center col-1">
-                            <a href="/survey-list/view/<%= SurveyList[count]._id %>" class="btn btn-success">
-                                <i class="fas fa-eye"></i> View</a>
-                        </td>
-                        <% } else { %>
-                        <td class="text-center col-1">
-                            <a href="/survey-list/view/<%= SurveyList[count]._id %>" class="btn btn-success">
-                                <i class="fas fa-eye"></i> View</a>
-                        </td>
-                        <% } %>
-
                     </tr>
                 <% } %>
-
             </table>
         </div>
     </div>
