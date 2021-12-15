@@ -160,7 +160,7 @@ module.exports.performDelete =  (req, res, next) => {
 
 module.exports.performDownload =  (req, res, next) => {
     let id = req.params.id;
-    result = path.join(__dirname, '../../public/assests', 'result.csv')
+    result = path.join(__dirname, '../../public/assests', 'result.txt')
     fs.writeFile(result, '', function(){})
 
     Survey.findById(id, (err, surveyToDownload) => {
@@ -168,15 +168,26 @@ module.exports.performDownload =  (req, res, next) => {
             console.log(err);
             res.end(err);
         } else {
-            arrr = surveyToDownload.responses
+            let arrr = surveyToDownload.responses
+            let arrr2 = ["          "]
+            for (let i = 0; i < arrr[0].length; i++) {
+                arrr2.push("Question " + (i + 1))
+            }
+
+            fs.writeFileSync(result, arrr2.join("  ") + "\n", {'flag':'a'}, function(err) {
+                if (err) {
+                    return console.error(err);
+                }
+            })
+
             for (let i = 0; i < arrr.length; i++) {
-                fs.writeFileSync(result, arrr[i].join() + "\n", {'flag':'a'}, function(err) {
+                fs.writeFileSync(result, "Response " + (i + 1) + "      " +  arrr[i].join("           ") + "\n", {'flag':'a'}, function(err) {
                     if (err) {
                         return console.error(err);
                     }
                 })
             }
-            res.download(result, 'result.csv')
+            res.download(result, surveyToDownload.title + ' result.txt')
         }
     })
 }
